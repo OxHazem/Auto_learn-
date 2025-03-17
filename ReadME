@@ -1,0 +1,66 @@
+Project Phases
+Phase I [10 Marks]: Data Exploration and Model Implementation
+Task 1: Data Exploration and Preprocessing
+1. Data Loading and Cleaning: Load the datasets and handle missing values, outliers,
+and inconsistencies.
+2. Exploratory Data Analysis (EDA):
+○ Visualize data distributions using histograms, box plots, and scatter plots.
+○ Identify correlations between features.
+○ Explore potential relationships between features and the target variable.
+3. Feature Engineering:
+○ Create new features or transform existing ones if necessary.
+○ Handle categorical variables using appropriate encoding techniques.
+○ Choose 20 most important features to work with.
+○ Scale numerical features if required.
+
+Task 2: Model Implementation
+1. Implement 4 classification models, ensuring each model is applied to the most
+appropriate dataset type. you can use these models but you are not limited to any of
+them.
+○ K-Nearest Neighbors (KNN)
+○ Logistic Regression
+○ SVM
+○ Random Forest
+○ Decision Tree
+2. Implement 1 ensembling technique, combining the predictions of multiple models to
+make a stronger, more reliable prediction (e.g. Voting).
+
+3. Model Training and Evaluation:
+○ Train each model on the prepared dataset.
+○ Evaluate model performance using appropriate metrics (e.g., accuracy,
+precision, recall, F1-score, MSE, RMSE, MAE).
+○ Compare the performance of different models and select the best-performing
+one.
+
+CSAI 253 Project
+
+2/6
+
+University of Science and Technology
+CSAI
+CSAI 253: Machine Learning
+
+Task 3: Report
+The report must include the following:
+● Problem Statement: Clearly define the problem and its significance.
+● Data Exploration: Summarize key insights from the exploratory data analysis.
+● Data Preprocessing: Describe the preprocessing steps taken, including handling
+missing values, outliers, and feature engineering.
+● Model Selection and Implementation: Explain the rationale for choosing specific
+models and provide details on the implementation.
+● Model Evaluation: Present the performance evaluation results for each model,
+including metrics and visualizations.
+● Conclusion: Summarize the findings and discuss the limitations of the models.
+Phase I Performance Evaluation and Grading:
+Your performance in this phase will be evaluated based on the following:
+1. Code Quality: Clarity, efficiency, and documentation.
+2. Model Performance: Accuracy and generalizability of the models.
+3. Data Analysis: Depth of analysis and insights derived from the data.
+4. Report Writing: Clarity, organization, and presentation of results.
+5. Code Explanation: Ability to explain the code and the rationale behind design
+choices.
+Phase I List of Deliverables:
+1. .Pdf file for the Report
+2. .py file for the code
+3. A clear task division for each member of the team
+Phase I deadline: 15 April 2025, 11:59 PM
