@@ -31,6 +31,3 @@ For the Logistic Regression architecture, the **Baseline Model (Without SMOTE) i
 
 Ultimately, Logistic Regression's inability to mold to the complex, non-linear realities of network traffic makes it an inferior choice for this specific dataset when compared to geometrically flexible algorithms.
 
----
-
-Now that we have successfully evaluated two algorithms (and proven why non-linear flexibility is so important for this data), we need to implement our final two classification models. Would you like to build a **Support Vector Machine (SVM)** to see how a more advanced boundary behaves, or move straight to a **Random Forest** to leverage the power of decision trees?
