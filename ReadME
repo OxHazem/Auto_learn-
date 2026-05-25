@@ -1,66 +1,45 @@
-Project Phases
-Phase I [10 Marks]: Data Exploration and Model Implementation
-Task 1: Data Exploration and Preprocessing
-1. Data Loading and Cleaning: Load the datasets and handle missing values, outliers,
-and inconsistencies.
-2. Exploratory Data Analysis (EDA):
-○ Visualize data distributions using histograms, box plots, and scatter plots.
-○ Identify correlations between features.
-○ Explore potential relationships between features and the target variable.
-3. Feature Engineering:
-○ Create new features or transform existing ones if necessary.
-○ Handle categorical variables using appropriate encoding techniques.
-○ Choose 20 most important features to work with.
-○ Scale numerical features if required.
+# Network Intrusion Detection: Algorithm Analysis & Optimization
 
-Task 2: Model Implementation
-1. Implement 4 classification models, ensuring each model is applied to the most
-appropriate dataset type. you can use these models but you are not limited to any of
-them.
-○ K-Nearest Neighbors (KNN)
-○ Logistic Regression
-○ SVM
-○ Random Forest
-○ Decision Tree
-2. Implement 1 ensembling technique, combining the predictions of multiple models to
-make a stronger, more reliable prediction (e.g. Voting).
+## 📌 Project Overview
+This project is an end-to-end machine learning study focused on detecting network intrusions using tabular cybersecurity data. The primary challenge of this dataset was severe **class imbalance**—malicious network attacks were vastly underrepresented compared to normal background traffic. 
 
-3. Model Training and Evaluation:
-○ Train each model on the prepared dataset.
-○ Evaluate model performance using appropriate metrics (e.g., accuracy,
-precision, recall, F1-score, MSE, RMSE, MAE).
-○ Compare the performance of different models and select the best-performing
-one.
+The objective of this project was to mathematically analyze how different types of machine learning algorithms (parametric, distance-based, and tree-based) react to synthetic data balancing and advanced hyperparameter tuning. 
 
-CSAI 253 Project
+## 🛠️ What We Did (The Methodology)
 
-2/6
+To solve the class imbalance problem without corrupting our models, we engineered a rigorous, mathematically sound pipeline:
 
-University of Science and Technology
-CSAI
-CSAI 253: Machine Learning
+1. **Selective Preprocessing:** We split our data processing based on how the algorithms "think." 
+    * For distance-based models (SVM, KNN, Logistic Regression), we applied `np.log1p` transformations to compress massive outliers (like `destination_bytes`) and used `StandardScaler` to ensure fair distance calculations.
+    * For tree-based models (Decision Trees, Random Forest), we bypassed scaling entirely to maximize computational efficiency, as trees rely on threshold logic rather than spatial geometry.
 
-Task 3: Report
-The report must include the following:
-● Problem Statement: Clearly define the problem and its significance.
-● Data Exploration: Summarize key insights from the exploratory data analysis.
-● Data Preprocessing: Describe the preprocessing steps taken, including handling
-missing values, outliers, and feature engineering.
-● Model Selection and Implementation: Explain the rationale for choosing specific
-models and provide details on the implementation.
-● Model Evaluation: Present the performance evaluation results for each model,
-including metrics and visualizations.
-● Conclusion: Summarize the findings and discuss the limitations of the models.
-Phase I Performance Evaluation and Grading:
-Your performance in this phase will be evaluated based on the following:
-1. Code Quality: Clarity, efficiency, and documentation.
-2. Model Performance: Accuracy and generalizability of the models.
-3. Data Analysis: Depth of analysis and insights derived from the data.
-4. Report Writing: Clarity, organization, and presentation of results.
-5. Code Explanation: Ability to explain the code and the rationale behind design
-choices.
-Phase I List of Deliverables:
-1. .Pdf file for the Report
-2. .py file for the code
-3. A clear task division for each member of the team
-Phase I deadline: 15 April 2025, 11:59 PM
+2. **Preventing Data Leakage:** We strictly utilized the `imblearn` pipeline over the standard `sklearn` pipeline. This ensured that **SMOTE (Synthetic Minority Over-sampling Technique)** was applied *exclusively* to the training data inside our cross-validation loops, keeping our validation data 100% pure and preventing falsely inflated accuracy scores.
+
+3. **Bayesian Optimization:** We abandoned basic grid search and utilized **Optuna**. By leveraging the Tree-structured Parzen Estimator (TPE) algorithm, we dynamically searched parameter spaces to find the absolute mathematical peak for each model's F1-Macro score.
+
+---
+
+## 📊 What We Found (Model Evaluation)
+
+We evaluated five distinct models, testing each on both the raw imbalanced data and the SMOTE-balanced data.
+
+### 🏆 1. Random Forest (The Champion)
+The Random Forest ensemble heavily outperformed all parametric models. By ignoring geometric distance, it mapped the complex attack vectors flawlessly.
+* **The Insight:** SMOTE vastly improved the forest's structural integrity. The baseline model had to grow dangerously deep (Max Depth: 29) to hunt for rare anomalies, risking overfitting. SMOTE filled the continuous gaps in the data, allowing the optimizer to find a much broader, generalized architecture (Max Depth: 15).
+* **The Result:** It successfully captured highly evasive attacks while generating only 1 false positive out of ~2,600 normal connections (Recall: 0.96, Precision: 0.99).
+
+### 🥈 2. Support Vector Machine (The Geometry Shift)
+The SVM analysis provided the strongest mathematical insight into the dataset's underlying geometry. 
+* **The Insight:** For the imbalanced baseline data, Optuna selected a **Linear kernel**. However, once SMOTE introduced dense clusters of synthetic attacks, Optuna mathematically rejected the straight linear boundary and automatically shifted to an **RBF Kernel**. 
+* **The Result:** Projecting the data into a higher dimension allowed the SVM to draw complex contours around the attacks, boosting Recall to 0.96 with a highly robust Precision of 0.92.
+
+### ❌ 3. Logistic Regression (The Linear Failure)
+Logistic Regression served as our baseline for parametric linear models.
+* **The Insight:** While it performed well on raw data, applying SMOTE caused a catastrophic precision collapse (dropping from 0.97 down to 0.64). 
+* **The Result:** A single, rigid straight line cannot bend around dense, balanced normal traffic. To catch the synthetic attacks, the boundary was forced to sweep forward, generating 68 false alarms. This mathematically proved that the dataset's attack vectors are not linearly separable when balanced.
+
+### 🌳 4. Single Decision Tree (The Overfitting Baseline)
+* **The Insight:** Evaluated purely to demonstrate the overfitting risks of single-tree architectures. The baseline tree grew to a brittle depth of 29 levels, practically memorizing the training data. Introducing SMOTE forced the algorithm to generalize its threshold rules (collapsing the depth to 16), proving exactly why single trees must be upgraded to forests for production environments.
+
+### 📍 5. K-Nearest Neighbors (The Distance Baseline)
+* **The Insight:** KNN handled the synthetic SMOTE data exceptionally well. Because it draws localized boundaries around specific data clusters, it successfully expanded its perimeter to capture 98% of the attacks without bleeding excessively into normal traffic.
